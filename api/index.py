@@ -1,12 +1,6 @@
-'''
-Date: 2021-08-28 19:32:06
-LastEditors: Steve Li
-LastEditTime: 2021-08-29 20:06:51
-FilePath: \pythonBlogd:\Programming\python\mail\api\index.py
-'''
 import smtplib as ml
 from http.server import BaseHTTPRequestHandler
-# from os import environ
+from os import environ
 from json import dumps,loads
 from re import compile
 from email.mime.text import MIMEText
