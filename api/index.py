@@ -15,6 +15,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-type','application/json')
             self.end_headers();
             passwd = compile(r'passwd=([^?&=]*)').findall(self.path);
+            to = compile(r'to=([^?&=]*)').findall(self.path);
             if len(passwd)==0:
                 self.wfile.write(dumps({
                         "code": 0,
@@ -35,8 +36,8 @@ class handler(BaseHTTPRequestHandler):
                     }).encode(encoding='utf-8'));
                     return;
             content =  MIMEText(unquote(msg[0]),'plain','utf-8')
-            content['From']=formataddr(["Vercel通知小助手",environ["SMTP_USER"]])
-            content['To']=formataddr([environ["MASTER_NAME"],environ["RECIEVER"]]);
+            content['From']=formataddr(["网站通知小助手",environ["SMTP_USER"]])
+            content['To']=formataddr([environ["MASTER_NAME"],to]);
             content['Subject']=Header("有新通知辣!");
             smtpobj = ml.SMTP_SSL(environ["SMTP_SERVER"],465)
             smtpobj.login(environ["SMTP_USER"],environ["SMTP_PASS"]);
