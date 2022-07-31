@@ -15,7 +15,14 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-type','application/json')
             self.end_headers();
             passwd = compile(r'passwd=([^?&=]*)').findall(self.path);
-            to = compile(r'to=([^?&=]*)').findall(self.path);
+            hllqk = compile(r'to=([^?&=]*)').findall(self.path);
+            if len(hllqk)==0:
+                self.wfile.write(dumps({
+                        "code": 0,
+                        "msg": "don jav jllqk"
+                }).encode());
+                return;
+
             if len(passwd)==0:
                 self.wfile.write(dumps({
                         "code": 0,
@@ -36,13 +43,13 @@ class handler(BaseHTTPRequestHandler):
                     }).encode(encoding='utf-8'));
                     return;
             content =  MIMEText(unquote(msg[0]),'plain','utf-8')
-            content['From']=formataddr(["网站通知小助手",environ["SMTP_USER"]])
-            content['To']=formataddr([environ["MASTER_NAME"],to]);
+            content['From']=formataddr(["Vercel通知小助手",environ["SMTP_USER"]])
+            content['To']=formataddr([environ["MASTER_NAME"],hllqk]);
             content['Subject']=Header("有新通知辣!");
             smtpobj = ml.SMTP_SSL(environ["SMTP_SERVER"],465)
             smtpobj.login(environ["SMTP_USER"],environ["SMTP_PASS"]);
             mail = content
-            smtpobj.send_message(from_addr=environ["SMTP_USER"], to_addrs=to,msg=mail)
+            smtpobj.send_message(from_addr=environ["SMTP_USER"], to_addrs=hllqk,msg=mail)
             self.wfile.write(dumps({
                         "code": 200,
                         "msg": "成功"
@@ -52,7 +59,7 @@ class handler(BaseHTTPRequestHandler):
             print(e);
             self.wfile.write(dumps({
                 "code": 500,
-                "msg": "配置错误，请在服务端查看错误日志"
+                "msg": "配置错误error，请在服务端查看错误日志"
             }).encode(encoding='utf-8'))
         finally:
             return;
