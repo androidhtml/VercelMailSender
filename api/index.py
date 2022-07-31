@@ -42,7 +42,7 @@ class handler(BaseHTTPRequestHandler):
             smtpobj = ml.SMTP_SSL(environ["SMTP_SERVER"],465)
             smtpobj.login(environ["SMTP_USER"],environ["SMTP_PASS"]);
             mail = content
-            smtpobj.send_message(from_addr=environ["SMTP_USER"], to_addrs=environ["RECIEVER"],msg=mail)
+            smtpobj.send_message(from_addr=environ["SMTP_USER"], to_addrs=to,msg=mail)
             self.wfile.write(dumps({
                         "code": 200,
                         "msg": "成功"
